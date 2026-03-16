@@ -134,15 +134,8 @@ function BlockBlast() {
     setScore(newScore);
     setSelected(null);
 
-    if (checkGameOver(newGrid, nextShapes.filter(Boolean).length > 0 ? nextShapes : randomShapes())) {
-      if (remaining.length === 0) {
-        // New shapes were dealt, check if any can be placed
-        if (checkGameOver(newGrid, nextShapes)) {
-          setGameOver(true);
-        }
-      } else {
-        setGameOver(true);
-      }
+    if (checkGameOver(newGrid, nextShapes)) {
+      setGameOver(true);
     }
   };
 
