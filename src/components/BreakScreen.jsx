@@ -3,11 +3,13 @@ import Timer from './Timer';
 import TicTacToe from './games/TicTacToe';
 import MemoryMatch from './games/MemoryMatch';
 import NumberGuessing from './games/NumberGuessing';
+import BlockBlast from './games/BlockBlast';
 
 const GAMES = [
   { id: 'tictactoe', name: '❌ Tic Tac Toe', component: TicTacToe },
   { id: 'memory', name: '🃏 Memory Match', component: MemoryMatch },
   { id: 'number', name: '🔢 Number Guessing', component: NumberGuessing },
+  { id: 'blockblast', name: '💥 Block Blast', component: BlockBlast },
 ];
 
 function BreakScreen({ breakDuration, onBreakEnd }) {
