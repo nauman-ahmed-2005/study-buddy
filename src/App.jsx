@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import Timer from './components/Timer';
 import Settings from './components/Settings';
 import BreakScreen from './components/BreakScreen';
+import AmbientSound from './components/AmbientSound';
 import './App.css';
 
 function App() {
@@ -75,6 +76,8 @@ function App() {
       <footer className="app-footer">
         Study Buddy &mdash; Stay focused, take breaks, have fun! 🎉
       </footer>
+
+      <AmbientSound />
     </div>
   );
 }
