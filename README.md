@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open [http://127.0.0.1:5173](http://127.0.0.1:5173) in your browser.
 
 ## Build
 
@@ -43,7 +43,7 @@ The 🎵 music player (bottom-left) integrates with Spotify via the official **W
 1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
 2. Click **Create app** and fill in the details
 3. Under **Redirect URIs**, add:
-   - `http://localhost:5173/` (local development)
+   - `http://127.0.0.1:5173/` (local development)
    - Your production URL, e.g. `https://yoursite.com/`
 4. Save and copy your **Client ID**
 
