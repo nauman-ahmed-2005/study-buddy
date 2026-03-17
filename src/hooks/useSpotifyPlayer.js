@@ -154,12 +154,16 @@ export default function useSpotifyPlayer(connected) {
   }, [connected, initPlayer]);
 
   const pause = useCallback(async () => {
-    if (!playerRef.current) throw new Error('Spotify player is not ready yet.');
+    if (!playerRef.current) {
+      throw new Error('Spotify player is unavailable. Ensure it is initialized and connected.');
+    }
     await playerRef.current.pause();
   }, []);
 
   const resume = useCallback(async () => {
-    if (!playerRef.current) throw new Error('Spotify player is not ready yet.');
+    if (!playerRef.current) {
+      throw new Error('Spotify player is unavailable. Ensure it is initialized and connected.');
+    }
     await playerRef.current.resume();
   }, []);
 
