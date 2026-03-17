@@ -3,6 +3,7 @@ import Timer from './components/Timer';
 import Settings from './components/Settings';
 import BreakScreen from './components/BreakScreen';
 import AmbientSound from './components/AmbientSound';
+import MusicPlayer from './components/MusicPlayer';
 import './App.css';
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
       </footer>
 
       <AmbientSound />
+      <MusicPlayer />
     </div>
   );
 }
