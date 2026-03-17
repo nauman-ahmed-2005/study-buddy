@@ -78,6 +78,8 @@ function playerReducer(state, action) {
  *   playerReady: boolean,
  *   playbackState: Spotify.PlaybackState|null,
  *   playerError: string|null,
+ *   pause: () => Promise<void>,
+ *   resume: () => Promise<void>,
  * }}
  */
 export default function useSpotifyPlayer(connected) {
@@ -151,10 +153,26 @@ export default function useSpotifyPlayer(connected) {
     whenSDKReady(initPlayer);
   }, [connected, initPlayer]);
 
+  const pause = useCallback(async () => {
+    if (!playerRef.current) {
+      throw new Error('Spotify player is unavailable. Ensure it is initialized and connected.');
+    }
+    await playerRef.current.pause();
+  }, []);
+
+  const resume = useCallback(async () => {
+    if (!playerRef.current) {
+      throw new Error('Spotify player is unavailable. Ensure it is initialized and connected.');
+    }
+    await playerRef.current.resume();
+  }, []);
+
   return {
     deviceId: state.deviceId,
     playerReady: state.playerReady,
     playbackState: state.playbackState,
     playerError: state.playerError,
+    pause,
+    resume,
   };
 }

@@ -4,8 +4,6 @@ import useSpotifyPlayer from '../hooks/useSpotifyPlayer';
 import {
   searchTracks,
   startPlayback,
-  pausePlayback,
-  resumePlayback,
   skipToNext,
   skipToPrevious,
   setVolume,
@@ -50,7 +48,8 @@ function MusicPlayer() {
   const searchTimerRef = useRef(null);
 
   const { connected, loading: authLoading, error: authError, login, logout } = useSpotifyAuth();
-  const { deviceId, playerReady, playbackState, playerError } = useSpotifyPlayer(connected);
+  const { deviceId, playerReady, playbackState, playerError, pause, resume } =
+    useSpotifyPlayer(connected);
 
   const currentTrack = playbackState?.track_window?.current_track ?? null;
   const isPlaying = playbackState ? !playbackState.paused : false;
@@ -115,14 +114,14 @@ function MusicPlayer() {
     setActionError(null);
     try {
       if (isPlaying) {
-        await pausePlayback();
+        await pause();
       } else {
-        await resumePlayback(deviceId);
+        await resume();
       }
     } catch (err) {
       setActionError(err.message);
     }
-  }, [isPlaying, playerReady, deviceId]);
+  }, [isPlaying, playerReady, pause, resume]);
 
   const handleNext = useCallback(async () => {
     setActionError(null);
