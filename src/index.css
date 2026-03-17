@@ -12,6 +12,11 @@
   --danger: #ef4444;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --lava-overflow-distance: -30vmax;
+  --lava-blur: 58px;
+  --lava-saturation: 115%;
+  --lava-primary-duration: 26s;
+  --lava-secondary-duration: 31s;
 
   --sans: 'Inter', system-ui, -apple-system, sans-serif;
   --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
@@ -48,12 +53,72 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(176, 120, 255, 0.35) 0, transparent 45%),
+    radial-gradient(circle at 80% 15%, rgba(140, 92, 255, 0.26) 0, transparent 40%),
+    linear-gradient(180deg, #120b25 0%, #1c1134 50%, #130a23 100%);
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  isolation: isolate;
+}
+
+#root::before,
+#root::after {
+  content: '';
+  position: fixed;
+  inset: var(--lava-overflow-distance);
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(var(--lava-blur)) saturate(var(--lava-saturation));
+}
+
+#root::before {
+  background:
+    radial-gradient(circle at 18% 32%, rgba(220, 165, 255, 0.7) 0 8%, transparent 20%),
+    radial-gradient(circle at 58% 18%, rgba(170, 115, 255, 0.7) 0 10%, transparent 22%),
+    radial-gradient(circle at 78% 60%, rgba(140, 86, 240, 0.6) 0 9%, transparent 21%),
+    radial-gradient(circle at 30% 75%, rgba(124, 58, 237, 0.6) 0 11%, transparent 24%);
+  animation: lava-drift-primary var(--lava-primary-duration) ease-in-out infinite alternate;
+}
+
+#root::after {
+  background:
+    radial-gradient(circle at 68% 34%, rgba(198, 148, 255, 0.58) 0 9%, transparent 22%),
+    radial-gradient(circle at 42% 66%, rgba(161, 104, 255, 0.58) 0 8%, transparent 21%),
+    radial-gradient(circle at 84% 78%, rgba(103, 65, 214, 0.52) 0 7%, transparent 19%),
+    radial-gradient(circle at 16% 82%, rgba(186, 128, 255, 0.52) 0 9%, transparent 22%);
+  animation: lava-drift-secondary var(--lava-secondary-duration) ease-in-out infinite alternate-reverse;
+  mix-blend-mode: screen;
+}
+
+@keyframes lava-drift-primary {
+  0% {
+    transform: translate3d(-5%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 7%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-3%, -8%, 0) scale(0.95);
+  }
+}
+
+@keyframes lava-drift-secondary {
+  0% {
+    transform: translate3d(4%, -4%, 0) scale(0.95);
+  }
+  50% {
+    transform: translate3d(-7%, 6%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(8%, -5%, 0) scale(1);
+  }
 }
 
 h1, h2, h3 {
