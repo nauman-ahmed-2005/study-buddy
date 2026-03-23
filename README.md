@@ -15,6 +15,7 @@ A study timer app that helps you stay focused with configurable study and break 
 - **Ambient Sounds** — White, brown, and pink noise generated locally in the browser
 - **Spotify Music Player** — Connect your Spotify account and listen to music while studying (mini-player, search, play/pause/skip)
 - **Dark Mode** — Automatically matches your system preference
+- **AI Study Coach (Agentic UI)** — Chat-driven onboarding, plan preview/edit, explicit confirm-before-apply, regenerate and rollback support
 
 ## Getting Started
 
@@ -31,6 +32,134 @@ Open [http://127.0.0.1:5173](http://127.0.0.1:5173) in your browser.
 npm run build
 npm run preview
 ```
+
+## AI Study Coach
+
+The app now includes an **AI Study Coach** panel (🤖 button in the header) with:
+
+- Guided chat to gather goals, deadlines, availability, and preferences
+- Structured plan preview with rationale/confidence
+- Constraint controls (max focus, game breaks, no late-night preference)
+- **Apply Plan** with a settings diff confirmation modal
+- **Regenerate** and **Rollback** plan actions
+- Strict runtime plan schema validation and deterministic fallback plan generation
+
+### Current architecture note
+
+This repository is currently frontend-only (React + Vite), so AI endpoints are modeled locally in `src/services/ai/*` to preserve backward compatibility and avoid introducing an unfinished backend in this change.
+
+The service layer mirrors target endpoint behavior:
+
+- `chatWithCoach` ~ `POST /api/ai/chat`
+- `generatePlan` ~ `POST /api/ai/plan/generate`
+- apply/rollback are executed in-app with local persisted plan versions
+
+### Strict plan JSON contract
+
+The coach validates plan payloads against the required shape at runtime (`validateStudyPlan`), including:
+
+- top-level required keys
+- per-day/per-session structure
+- session profile + game break enum
+- adaptation rules
+- confidence range `0..1`
+- `needsUserConfirmation` boolean
+
+### API contract examples (target backend shape)
+
+`POST /api/ai/chat`
+
+```json
+{
+  "message": "My exam is in 3 weeks and math is weak.",
+  "conversationId": "conv_123"
+}
+```
+
+```json
+{
+  "conversationId": "conv_123",
+  "reply": "Great input — I can turn this into a structured, realistic plan.",
+  "followUpQuestions": [
+    "Which days and times are you realistically available to study?"
+  ]
+}
+```
+
+`POST /api/ai/plan/generate`
+
+```json
+{
+  "userId": "user_42",
+  "horizonDays": 7,
+  "constraints": {
+    "maxFocusMinutes": 45,
+    "minBreakMinutes": 5,
+    "gamesEnabled": true
+  }
+}
+```
+
+Response shape:
+
+```json
+{
+  "plan": {
+    "planTitle": "Fallback Focus Plan",
+    "horizonDays": 7,
+    "dailyPlans": [
+      {
+        "date": "2026-03-23",
+        "sessions": [
+          {
+            "subject": "Math",
+            "topic": "Core practice set 1.1",
+            "focusMinutes": 25,
+            "breakMinutes": 5,
+            "longBreakAfter": 4,
+            "gameBreak": true,
+            "priority": 1
+          }
+        ],
+        "notes": "Balanced sessions with recovery breaks."
+      }
+    ],
+    "sessionProfile": {
+      "defaultFocusMinutes": 25,
+      "defaultBreakMinutes": 5,
+      "longBreakMinutes": 15,
+      "sessionsBeforeLongBreak": 4,
+      "gameBreakFrequency": "low"
+    },
+    "adaptationRules": [
+      {
+        "condition": "Completion rate below 60% for the last 5 sessions",
+        "adjustment": "Reduce daily sessions by 1 and shorten focus blocks by 5 minutes."
+      }
+    ],
+    "rationale": "Completion rate is mixed, so workload stays conservative for consistency. Constraints and current timer settings were respected.",
+    "confidence": 0.62,
+    "needsUserConfirmation": true
+  },
+  "generatedBy": "ai_rules",
+  "usedFallback": false
+}
+```
+
+### Fallback behavior
+
+If generation fails or output becomes invalid, the service:
+
+1. Builds a deterministic rule-based plan from settings/constraints
+2. Marks generation source as `fallback_rules`
+3. Returns a safe, user-visible fallback reason
+
+### Analytics events emitted
+
+- `plan_generated`
+- `plan_applied`
+- `plan_regenerated`
+- `plan_rolled_back`
 
 ## Spotify Music Integration Setup
 
