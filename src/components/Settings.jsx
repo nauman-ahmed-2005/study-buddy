@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
-function Settings({ studyMinutes, breakMinutes, onSave }) {
+function Settings({ studyMinutes, breakMinutes, gamesEnabled, onSave }) {
   const [study, setStudy] = useState(studyMinutes);
   const [breakTime, setBreakTime] = useState(breakMinutes);
+  const [games, setGames] = useState(gamesEnabled);
 
   const handleSave = () => {
     const s = Math.max(1, Math.min(120, study));
     const b = Math.max(1, Math.min(60, breakTime));
-    onSave(s, b);
+    onSave(s, b, games);
   };
 
   return (
@@ -61,6 +62,16 @@ function Settings({ studyMinutes, breakMinutes, onSave }) {
               +1
             </button>
           </div>
+        </label>
+        <label className="settings-field settings-toggle">
+          <span>Game Breaks</span>
+          <button
+            className={`btn btn-small ${games ? 'btn-secondary' : 'btn-outline'}`}
+            type="button"
+            onClick={() => setGames((prev) => !prev)}
+          >
+            {games ? 'Enabled' : 'Disabled'}
+          </button>
         </label>
         <button className="btn btn-primary" onClick={handleSave}>
           Save & Start

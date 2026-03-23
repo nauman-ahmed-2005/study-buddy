@@ -12,7 +12,7 @@ const GAMES = [
   { id: 'blockblast', name: '💥 Block Blast', component: BlockBlast },
 ];
 
-function BreakScreen({ breakDuration, onBreakEnd }) {
+function BreakScreen({ breakDuration, onBreakEnd, gamesEnabled = true }) {
   const [selectedGame, setSelectedGame] = useState(null);
 
   const GameComponent = selectedGame
@@ -34,20 +34,23 @@ function BreakScreen({ breakDuration, onBreakEnd }) {
 
       <div className="game-selector">
         <h3>🎮 Play a Minigame</h3>
-        <div className="game-buttons">
-          {GAMES.map((game) => (
-            <button
-              key={game.id}
-              className={`btn btn-game ${selectedGame === game.id ? 'active' : ''}`}
-              onClick={() => setSelectedGame(selectedGame === game.id ? null : game.id)}
-            >
-              {game.name}
-            </button>
-          ))}
-        </div>
+        {!gamesEnabled && <p className="ai-muted">Game breaks are disabled by your current settings.</p>}
+        {gamesEnabled && (
+          <div className="game-buttons">
+            {GAMES.map((game) => (
+              <button
+                key={game.id}
+                className={`btn btn-game ${selectedGame === game.id ? 'active' : ''}`}
+                onClick={() => setSelectedGame(selectedGame === game.id ? null : game.id)}
+              >
+                {game.name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      {GameComponent && (
+      {gamesEnabled && GameComponent && (
         <div className="game-container">
           <GameComponent />
         </div>

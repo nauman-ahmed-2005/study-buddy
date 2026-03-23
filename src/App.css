@@ -862,3 +862,223 @@
     left: 0;
   }
 }
+
+/* AI Study Coach */
+.ai-coach-shell {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1100px, calc(100vw - 24px));
+  max-height: calc(100vh - 100px);
+  overflow: auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 300;
+  padding: 16px;
+}
+
+.ai-coach-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ai-coach-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+}
+
+.ai-chat-panel,
+.ai-plan-preview {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  background: var(--card-bg);
+}
+
+.ai-chat-header p,
+.ai-muted {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.ai-chat-messages {
+  min-height: 180px;
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-chat-message {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.ai-chat-message.assistant {
+  background: var(--accent-light);
+}
+
+.ai-chat-message.user {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.ai-chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-chat-input {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-h);
+}
+
+.ai-quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+
+.ai-grid label,
+.ai-constraints label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.ai-constraints {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.ai-checkbox {
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.ai-daily-plans {
+  display: grid;
+  gap: 8px;
+  max-height: 280px;
+  overflow: auto;
+  margin-bottom: 12px;
+}
+
+.ai-day-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.ai-day-card ul {
+  margin: 6px 0 6px 16px;
+}
+
+.ai-adaptation-list {
+  margin: 8px 0 10px 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.ai-adaptation-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ai-warning {
+  color: var(--warning);
+  font-size: 0.85rem;
+}
+
+.ai-error {
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+
+.ai-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ai-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 400;
+  padding: 12px;
+}
+
+.ai-modal {
+  width: min(500px, 100%);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.ai-diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.ai-diff-table th,
+.ai-diff-table td {
+  border: 1px solid var(--border);
+  padding: 8px;
+  text-align: left;
+}
+
+.ai-plan-chip {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  z-index: 310;
+}
+
+@media (max-width: 900px) {
+  .ai-coach-content {
+    grid-template-columns: 1fr;
+  }
+}
